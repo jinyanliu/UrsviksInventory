@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Ursviks Inventory</string>
+
+    <!-- Title text for the empty view, which describes the empty box image [CHAR LIMIT=20] -->
+    <string name="empty_view_title_text">There is nothing to sell...</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=20] -->
+    <string name="empty_view_subtitle_text">Get started by adding a product</string>
+
+    <!-- Text on the button to add a product [CHAR LIMIT=20] -->
+    <string name="button_text_add_inventory">ADD</string>
+</resources>
