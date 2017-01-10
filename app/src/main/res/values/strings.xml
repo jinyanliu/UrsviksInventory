@@ -7,24 +7,43 @@
     <!-- Subtitle text for the empty view that prompts the user to add a product [CHAR LIMIT=20] -->
     <string name="empty_view_subtitle_text">Get started by adding a product</string>
 
-    <!-- Text on the button to add a product [CHAR LIMIT=20] -->
+    <!-- Text on the button to add a product [CHAR LIMIT=5] -->
     <string name="button_text_add_inventory">ADD</string>
 
-    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=20] -->
     <string name="category_overview">Overview</string>
 
-    <!-- Label for price information in the editor [CHAR LIMIT=30] -->
+    <!-- Label for price information in the editor [CHAR LIMIT=20] -->
     <string name="category_price">Price</string>
 
-    <!-- Label for quantity information in the editor [CHAR LIMIT=30] -->
-    <string name="category_quantity">Quantity</string>
+    <!-- Label for quantity information in the editor [CHAR LIMIT=20] -->
+    <string name="category_quantity">Current Quantity</string>
 
-    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <!-- Text hint for name field in the editor [CHAR LIMIT=20] -->
     <string name="hint_product_name">Name</string>
 
-    <!-- Text hint for price field in the editor [CHAR LIMIT=30] -->
+    <!-- Text hint for price field in the editor [CHAR LIMIT=20] -->
     <string name="hint_product_price">Price</string>
 
     <!-- Units for price of the product (kr) [CHAR LIMIT=5] -->
     <string name="unit_price">kr</string>
+
+    <!-- Text hint for quantity field in the editor [CHAR LIMIT=20] -->
+    <string name="hint_product_quantity">Current Quantity</string>
+
+    <!-- Text on the button for order in quantity field in the editor [CHAR LIMIT=10] -->
+    <string name="quantity_order_button">Order</string>
+
+    <!-- Text hint for sale quantity field in the editor [CHAR LIMIT=20] -->
+    <string name="hint_sale_product_quantity">Sale Quantity</string>
+
+    <!-- Text on the button for sale in quantity field in the editor [CHAR LIMIT=10] -->
+    <string name="quantity_sale_button">-</string>
+
+    <!-- Text hint for receive quantity field in the editor [CHAR LIMIT=20] -->
+    <string name="hint_receive_product_quantity">Receive Quantity</string>
+
+    <!-- Text on the button for receive in quantity field in the editor [CHAR LIMIT=10] -->
+    <string name="quantity_receive_button">+</string>
+
 </resources>
