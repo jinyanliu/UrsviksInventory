@@ -33,7 +33,7 @@
 
             <!-- Picture field -->
             <ImageView
-                android:id="@+id/editor_product_image"
+                android:id="@+id/edit_product_image"
                 android:layout_width="0dp"
                 android:layout_height="80dp"
                 android:layout_weight="1"
@@ -118,8 +118,8 @@
                 android:layout_weight="2"
                 android:orientation="horizontal">
 
-
                 <EditText
+                    android:id="@+id/edit_product_current_quantity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -127,6 +127,7 @@
                     android:inputType="number"/>
 
                 <Button
+                    android:id="@+id/edit_product_order_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -154,6 +155,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/edit_product_sale_quantity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -162,6 +164,7 @@
                     android:textAppearance="?android:textAppearanceSmall"/>
 
                 <Button
+                    android:id="@+id/edit_product_minus_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -189,6 +192,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/edit_product_receive_quantity"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -197,6 +201,7 @@
                     android:textAppearance="?android:textAppearanceSmall"/>
 
                 <Button
+                    android:id="@+id/edit_product_plus_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
