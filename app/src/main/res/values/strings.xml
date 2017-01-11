@@ -49,4 +49,19 @@
     <!-- Text on the button for upload new picture in overview field in the editor [CHAR LIMIT=10] -->
     <string name="add_new_picture_button">New Photo</string>
 
+    <!-- Label for overflow menu option that inserts fake inventory data into the app [CHAR LIMIT=20] -->
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+
+    <!-- Label for overflow menu option that deletes all inventory data in the app [CHAR LIMIT=20] -->
+    <string name="action_delete_all_products">Delete All Products</string>
+
+    <!-- Text on the button for sale in list item [CHAR LIMIT=5] -->
+    <string name="list_item_sale_button">Sale</string>
+
+    <!-- Label for editor menu option to save product and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current product [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+
 </resources>
