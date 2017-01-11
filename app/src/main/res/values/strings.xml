@@ -47,6 +47,6 @@
     <string name="quantity_receive_button">+</string>
 
     <!-- Text on the button for upload new picture in overview field in the editor [CHAR LIMIT=10] -->
-    <string name="add_new_picture_button">New</string>
+    <string name="add_new_picture_button">New Photo</string>
 
 </resources>
