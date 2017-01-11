@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
-            android:text="Quantity:"
+            android:text="@string/list_item_quantity_title"
             android:textAppearance="?android:textAppearanceSmall"
             android:textColor="#AEB6BD"/>
 

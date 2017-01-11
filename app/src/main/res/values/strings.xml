@@ -58,10 +58,25 @@
     <!-- Text on the button for sale in list item [CHAR LIMIT=5] -->
     <string name="list_item_sale_button">Sale</string>
 
+    <!-- Text for quantity title in list item [CHAR LIMIT=10] -->
+    <string name="list_item_quantity_title">Quantity:</string>
+
     <!-- Label for editor menu option to save product and leave editor [CHAR LIMIT=20] -->
     <string name="action_save">Save</string>
 
     <!-- Label for editor overflow menu option that deletes the current product [CHAR LIMIT=20] -->
     <string name="action_delete">Delete</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current product [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_msg">Delete this pet?</string>
+
+    <!-- Dialog message to ask the user to confirm deleting all products [CHAR LIMIT=NONE] -->
+    <string name="delete_all_dialog_msg">Delete all pets?</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current product [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current product [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
 
 </resources>

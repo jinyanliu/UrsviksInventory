@@ -88,7 +88,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         // Update the ImageView and TextViews with the attributes for the current product
         pictureImageView.setImageBitmap(productPicture);
         nameTextView.setText(productName);
-        priceTextView.setText(productPrice);
-        quantityTextView.setText(productQuantity);
+        priceTextView.setText(String.valueOf(productPrice));
+        quantityTextView.setText(String.valueOf(productQuantity));
     }
 }
