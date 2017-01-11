@@ -68,10 +68,10 @@
     <string name="action_delete">Delete</string>
 
     <!-- Dialog message to ask the user to confirm deleting the current product [CHAR LIMIT=NONE] -->
-    <string name="delete_dialog_msg">Delete this pet?</string>
+    <string name="delete_dialog_msg">Delete this product?</string>
 
     <!-- Dialog message to ask the user to confirm deleting all products [CHAR LIMIT=NONE] -->
-    <string name="delete_all_dialog_msg">Delete all pets?</string>
+    <string name="delete_all_dialog_msg">Delete all products?</string>
 
     <!-- Dialog button text for the option to confirm deleting the current product [CHAR LIMIT=20] -->
     <string name="delete">Delete</string>

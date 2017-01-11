@@ -111,7 +111,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         ContentValues values = new ContentValues();
         values.put(InventoryEntry.COLUMN_INVENTORY_NAME, "Peanuts");
 
-        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.empty_box);
+        Bitmap image = BitmapFactory.decodeResource(getResources(), R.drawable.dummy_picture_peanuts);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
