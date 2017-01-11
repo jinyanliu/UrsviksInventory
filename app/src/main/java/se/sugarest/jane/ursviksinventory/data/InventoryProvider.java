@@ -203,6 +203,144 @@ public class InventoryProvider extends ContentProvider {
         return ContentUris.withAppendedId(uri, id);
     }
 
+    /**
+     * Updates the data at the given selection and selection arguments, with the new ContentValues.
+     */
+    @Override
+    public int update(Uri uri, ContentValues contentValues, String selection, String[] selectionArgs) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                return updateInventory(uri, contentValues, selection, selectionArgs);
+            case INVENTORY_ID:
+                // For the INVENTORY_ID code, extract out the ID from the URI,
+                // so we know which row to update. Selection will be "_id=?" and selection
+                // arguments will be a String array containing the actual ID.
+                selection = InventoryEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                return updateInventory(uri, contentValues, selection, selectionArgs);
+            default:
+                throw new IllegalArgumentException("Update is not supported for " + uri);
+        }
+    }
 
+    /**
+     * Update inventories in the database with the given content values. Apply the changes to the rows
+     * specified in the selection and selection arguments (which could be 0 or 1 or more inventories).
+     * Return the number of rows that were successfully updated.
+     */
+    private int updateInventory(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 
+        // Logically be more efficient if placed before the data validation
+        // If there are no values to update, then don't try to update the database
+        if (values.size() == 0) {
+            return 0;
+        }
+
+        /**
+         * If the {@link InventoryEntry#COLUMN_INVENTORY_NAME} key is present,
+         * check that the name is not null.
+         */
+        if (values.containsKey(InventoryEntry.COLUMN_INVENTORY_NAME)) {
+            String name = values.getAsString(InventoryEntry.COLUMN_INVENTORY_NAME);
+            if (name == null || name.isEmpty()) {
+                throw new IllegalArgumentException("Product requires a name");
+            }
+        }
+
+        /**
+         * If the {@link InventoryEntry#COLUMN_INVENTORY_PRICE} key is present,
+         * check that the price is not null and it's greater than or equal to 0 kr
+         */
+        if (values.containsKey(InventoryEntry.COLUMN_INVENTORY_PRICE)) {
+            Integer price = values.getAsInteger(InventoryEntry.COLUMN_INVENTORY_PRICE);
+            if (price == null || price < 0) {
+                throw new IllegalArgumentException("Product requires a valid price");
+            }
+        }
+
+        /**
+         * If the {@link InventoryEntry#COLUMN_INVENTORY_QUANTITY} key is present,
+         * check that the quantity is not null and it's greater than or equal to 0 kr
+         */
+        if (values.containsKey(InventoryEntry.COLUMN_INVENTORY_QUANTITY)) {
+            Integer quantity = values.getAsInteger(InventoryEntry.COLUMN_INVENTORY_QUANTITY);
+            if (quantity == null || quantity < 0) {
+                throw new IllegalArgumentException("Product requires a valid quantity");
+            }
+        }
+
+        // No need to check the picture, any value is valid (including null).
+
+        // Otherwise, get writable database to update the data
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        // Perform the update on the database and get the number of rows affected
+        int rowsUpdated = database.update(InventoryEntry.TABLE_NAME, values, selection, selectionArgs);
+
+        // If 1 or more rows were updated, then notify all listeners that the data at the given URI
+        // has changed.
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        // Return the number of rows updated
+        return rowsUpdated;
+    }
+
+    /**
+     * Delete the data at the given selection and selection arguments.
+     */
+    @Override
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+
+        // Track the number of rows that were deleted
+        int rowsDeleted;
+
+        // Get writable database
+        SQLiteDatabase database = mDbHelper.getWritableDatabase();
+
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                // Delete all rows that match the selection and selection args
+                rowsDeleted = database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case INVENTORY_ID:
+                // Delete a single row given by the ID in the URI
+                selection = InventoryEntry._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(ContentUris.parseId(uri))};
+                rowsDeleted = database.delete(InventoryEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Deletion is not supported for " + uri);
+        }
+
+        // If 1 or more rows were deleted, then notify all listeners that the data at the
+        // given URI has changed
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        // Return the number of rows deleted
+        return rowsDeleted;
+    }
+
+    /**
+     * Returns the MIME type of data for the content URI.
+     */
+    @Override
+    public String getType(Uri uri) {
+        final int match = sUriMatcher.match(uri);
+        switch (match) {
+            case INVENTORY:
+                return InventoryEntry.CONTENT_LIST_TYPE;
+            case INVENTORY_ID:
+                return InventoryEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri + " with match " + match);
+        }
+    }
 }
+
+
