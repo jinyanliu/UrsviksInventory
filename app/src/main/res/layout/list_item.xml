@@ -13,7 +13,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:src="@drawable/ic_photo"/>
+        android:src="@drawable/ic_photo"
+        android:id="@+id/list_item_picture"/>
 
     <LinearLayout
         android:layout_width="0dp"
@@ -28,7 +29,8 @@
             android:fontFamily="sans-serif-medium"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#2B3D4D"
-            tools:text="Peanuts"/>
+            tools:text="Peanuts"
+            android:id="@+id/list_item_name"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -36,7 +38,8 @@
             android:fontFamily="sans-serif-medium"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#2B3D4D"
-            tools:text="20kr"/>
+            tools:text="20kr"
+            android:id="@+id/list_item_price"/>
     </LinearLayout>
 
     <LinearLayout
@@ -61,7 +64,8 @@
             android:paddingLeft="8dp"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#2B3D4D"
-            tools:text="50"/>
+            tools:text="50"
+            android:id="@+id/list_item_quantity"/>
 
     </LinearLayout>
 

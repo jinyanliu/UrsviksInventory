@@ -26,6 +26,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity"/>
         </activity>
+
+        <provider
+            android:name=".data.InventoryProvider"
+            android:authorities="se.sugarest.jane.ursviksinventory"
+            android:exported="false"/>
+
     </application>
 
 </manifest>
