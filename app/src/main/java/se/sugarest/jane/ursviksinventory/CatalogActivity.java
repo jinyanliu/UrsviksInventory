@@ -115,8 +115,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
-
         values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
+
         values.put(InventoryEntry.COLUMN_INVENTORY_PRICE, "20");
         values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, "50");
 
