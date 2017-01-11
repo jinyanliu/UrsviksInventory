@@ -87,7 +87,7 @@ public class InventoryContract {
         /**
          * Picture of the inventory.
          * <p>
-         * Type: IMAGE
+         * Type: BLOB
          */
         public final static String COLUMN_INVENTORY_PICTURE = "picture";
 
