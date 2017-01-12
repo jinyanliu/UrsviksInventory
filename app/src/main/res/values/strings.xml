@@ -112,4 +112,7 @@
     <!-- Toast message in editor when current product has failed to be deleted [CHAR LIMIT=NONE] -->
     <string name="editor_delete_product_failed">Error with deleting product</string>
 
+    <!-- Toast message when user try to click sale Button when item quantity is smaller than 0 [CHAR LIMIT=NONE] -->
+    <string name="sale_button_no_item">Sold out!</string>
+
 </resources>

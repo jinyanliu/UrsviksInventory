@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import se.sugarest.jane.ursviksinventory.data.InventoryContract;
 
@@ -63,7 +64,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(final View view, Context context, Cursor cursor) {
+    public void bindView(final View view, final Context context, Cursor cursor) {
 
         // Find individual views that we want to modify in the list item layout.
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.list_item_picture);
@@ -96,7 +97,11 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         saleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                productQuantity = productQuantity - 1;
+                if (productQuantity > 0) {
+                    productQuantity = productQuantity - 1;
+                } else {
+                    Toast.makeText(context, R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
+                }
                 Log.v("InventoryCursorAdapter", "productQuantity: " + productQuantity);
                 quantityTextView.setText(String.valueOf(productQuantity));
             }
