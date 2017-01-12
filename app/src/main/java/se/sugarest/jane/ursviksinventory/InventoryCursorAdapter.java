@@ -75,18 +75,21 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         // Read the attributes from the Cursor for the current product
         byte[] imgByte = cursor.getBlob(pictureColumnIndex);
-        Bitmap productPicture = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+
+        if (imgByte != null) {
+            Bitmap productPicture = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+            // Update the ImageView with the attributes for the current product
+            pictureImageView.setImageBitmap(productPicture);
+        } else {
+            // If the product picture is null, then set the imageview invisible
+            pictureImageView.setVisibility(View.INVISIBLE);
+        }
+
         String productName = cursor.getString(nameColumnIndex);
         int productPrice = cursor.getInt(priceColumnIndex);
         int productQuantity = cursor.getInt(quantityColumnIndex);
 
-        // If the product picture is null, then set the imageview invisible
-        if (productPicture == null) {
-            pictureImageView.setVisibility(View.INVISIBLE);
-        }
-
-        // Update the ImageView and TextViews with the attributes for the current product
-        pictureImageView.setImageBitmap(productPicture);
+        // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);
         priceTextView.setText(String.valueOf(productPrice) + " kr");
         quantityTextView.setText(String.valueOf(productQuantity));
