@@ -6,8 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
     android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal"
     android:padding="8dp">
 
     <ImageView
@@ -43,7 +43,8 @@
             android:fontFamily="sans-serif-medium"
             android:textAppearance="?android:textAppearanceMedium"
             android:textColor="#2B3D4D"
-            tools:text="20kr"/>
+            tools:text="20"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -74,12 +75,12 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/list_item_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="@string/list_item_sale_button"
-        android:id="@+id/list_item_button"/>
+        android:text="@string/list_item_sale_button"/>
 
 </LinearLayout>
 
