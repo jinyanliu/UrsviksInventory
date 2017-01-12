@@ -349,7 +349,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
             // Extract out the value from the Cursor for the given column index
             byte[] imgByte = cursor.getBlob(pictureColumnIndex);
-            Bitmap productPicture = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+            if (imgByte != null) {
+                Bitmap productPicture = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+                mPictureImageView.setImageBitmap(productPicture);
+            }
+
             String productName = cursor.getString(nameColumnIndex);
             int productPrice = cursor.getInt(priceColumnIndex);
             int productQuantity = cursor.getInt(quantityColumnIndex);
@@ -358,7 +362,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             mNameEditText.setText(productName);
             mPriceEditText.setText(String.valueOf(productPrice) + " kr");
             mCurrentQuantityEditText.setText(String.valueOf(productQuantity));
-            mPictureImageView.setImageBitmap(productPicture);
         }
     }
 

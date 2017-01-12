@@ -4,10 +4,12 @@ package se.sugarest.jane.ursviksinventory;
  * Created by jane on 1/11/17.
  */
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +20,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import se.sugarest.jane.ursviksinventory.data.InventoryContract;
+import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
+
+import static se.sugarest.jane.ursviksinventory.data.InventoryContract.BASE_CONTENT_URI;
+import static se.sugarest.jane.ursviksinventory.data.InventoryContract.PATH_INVENTORY;
 
 /**
  * {@link InventoryCursorAdapter} is an adapter for a list or grid view
@@ -65,19 +70,22 @@ public class InventoryCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(final View view, final Context context, Cursor cursor) {
-
         // Find individual views that we want to modify in the list item layout.
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.list_item_picture);
         TextView nameTextView = (TextView) view.findViewById(R.id.list_item_name);
         TextView priceTextView = (TextView) view.findViewById(R.id.list_item_price);
         final TextView quantityTextView = (TextView) view.findViewById(R.id.list_item_quantity);
-        Button saleButton = (Button) view.findViewById(R.id.list_item_button);
+        final Button saleButton = (Button) view.findViewById(R.id.list_item_button);
 
         // Find the columns of inventory attributes that we're interested in
-        int pictureColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_PICTURE);
-        int nameColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_NAME);
-        int priceColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_PRICE);
-        int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_QUANTITY);
+        int pictureColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_PICTURE);
+        int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_NAME);
+        int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_PRICE);
+        int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_QUANTITY);
+        int rowIdColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
+        int id = cursor.getInt(rowIdColumnIndex);
+
+        final Uri newUri = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_INVENTORY + "/" + id);
 
         // Read the attributes from the Cursor for the current product
         byte[] imgByte = cursor.getBlob(pictureColumnIndex);
@@ -99,11 +107,16 @@ public class InventoryCursorAdapter extends CursorAdapter {
             public void onClick(View v) {
                 if (productQuantity > 0) {
                     productQuantity = productQuantity - 1;
+                    ContentValues values = new ContentValues();
+                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity);
+                    context.getContentResolver().update(newUri, values, null, null);
                 } else {
                     Toast.makeText(context, R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
                 }
                 Log.v("InventoryCursorAdapter", "productQuantity: " + productQuantity);
                 quantityTextView.setText(String.valueOf(productQuantity));
+                Log.v("button focusable?", "" + saleButton.isFocusable());
+                Log.v("item focusable?", "" + view.isFocusable());
             }
         });
 
@@ -112,4 +125,5 @@ public class InventoryCursorAdapter extends CursorAdapter {
         priceTextView.setText(String.valueOf(productPrice) + " kr");
         quantityTextView.setText(String.valueOf(productQuantity));
     }
+
 }
