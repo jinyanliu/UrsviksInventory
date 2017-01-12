@@ -8,9 +8,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,6 +25,8 @@ import se.sugarest.jane.ursviksinventory.data.InventoryContract;
  * how to create list items for each row of inventory data in the {@Link Cursor}.
  */
 public class InventoryCursorAdapter extends CursorAdapter {
+
+    private int productQuantity;
 
     /**
      * Constructs a new {@link InventoryCursorAdapter}.
@@ -59,13 +63,14 @@ public class InventoryCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
+    public void bindView(final View view, Context context, Cursor cursor) {
 
         // Find individual views that we want to modify in the list item layout.
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.list_item_picture);
         TextView nameTextView = (TextView) view.findViewById(R.id.list_item_name);
         TextView priceTextView = (TextView) view.findViewById(R.id.list_item_price);
-        TextView quantityTextView = (TextView) view.findViewById(R.id.list_item_quantity);
+        final TextView quantityTextView = (TextView) view.findViewById(R.id.list_item_quantity);
+        Button saleButton = (Button) view.findViewById(R.id.list_item_button);
 
         // Find the columns of inventory attributes that we're interested in
         int pictureColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_PICTURE);
@@ -87,7 +92,15 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         String productName = cursor.getString(nameColumnIndex);
         int productPrice = cursor.getInt(priceColumnIndex);
-        int productQuantity = cursor.getInt(quantityColumnIndex);
+        productQuantity = cursor.getInt(quantityColumnIndex);
+
+        saleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                productQuantity = productQuantity - 1;
+                Log.v("InventoryCursorAdapter", "productQuantity: " + productQuantity);
+                quantityTextView.setText(String.valueOf(productQuantity));
+            }
+        });
 
         // Update the TextViews with the attributes for the current product
         nameTextView.setText(productName);

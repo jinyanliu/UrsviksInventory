@@ -77,7 +77,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:text="@string/list_item_sale_button"/>
+        android:text="@string/list_item_sale_button"
+        android:id="@+id/list_item_button"/>
 
 </LinearLayout>
 
