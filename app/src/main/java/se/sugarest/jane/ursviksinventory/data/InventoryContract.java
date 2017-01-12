@@ -43,8 +43,8 @@ public class InventoryContract {
     }
 
     /**
-     * Inner class that defines constant values for the pets database table.
-     * Each entry in the table represents a single pet.
+     * Inner class that defines constant values for the inventory database table.
+     * Each entry in the table represents a single product.
      */
     public static abstract class InventoryEntry implements BaseColumns {
 

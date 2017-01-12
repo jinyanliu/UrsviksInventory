@@ -81,7 +81,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                  * by appending the "id" (passed as input to this method) onto the
                  * {@link InventoryEntry#CONTENT_URI}.
                  * For example, the URI would be "content://se.sugarest.jane.ursviksinventory/inventory/2"
-                 * if the pet with ID 2 was clicked on.
+                 * if the product with ID 2 was clicked on.
                  */
                 Uri currentProductUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
 
@@ -213,7 +213,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     }
 
     /**
-     * Prompt the user to confirm that they want to delete all pets.
+     * Prompt the user to confirm that they want to delete all products.
      */
     private void showDeleteConfirmationDialog() {
         // Create an AlertDialog.Builder and set the message, and click listeners

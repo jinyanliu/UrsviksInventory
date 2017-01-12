@@ -102,7 +102,7 @@ public class InventoryProvider extends ContentProvider {
             case INVENTORY:
                 // For the INVENTORY code, query the inventory table directly with the given
                 // projection, selection, selection arguments, and sort order. The cursor
-                // could contain multiple rows of the pets table.
+                // could contain multiple rows of the products table.
                 // Perform database query on inventory table.
                 cursor = database.query(
                         InventoryEntry.TABLE_NAME, // The table to query
@@ -194,7 +194,7 @@ public class InventoryProvider extends ContentProvider {
             return null;
         }
 
-        // Notify all listeners that the data has changed for the pet content URI
+        // Notify all listeners that the data has changed for the product content URI
         // uri: content://se.sugarest.jane.ursviksinventory/inventory
         getContext().getContentResolver().notifyChange(uri, null);
 

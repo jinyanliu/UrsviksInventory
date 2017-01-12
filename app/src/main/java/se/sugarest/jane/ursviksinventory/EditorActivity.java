@@ -108,7 +108,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // This is a new product, so change the app bar to say "Add a Product"
             setTitle(getString(R.string.editor_activity_title_add_product));
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
-            // (It doesn't make sense to delete a pet that hasn't been created yet.)
+            // (It doesn't make sense to delete a product that hasn't been created yet.)
             invalidateOptionsMenu();
         } else {
             // Otherwise this is an existing product, so change the app bar to say "Edit a Product"
@@ -179,7 +179,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(InventoryEntry.COLUMN_INVENTORY_PRICE, priceInt);
         values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, currentQuantityInt);
 
-        // Determine if this is a new or existing pet by checking if mCurrentProductUri is null
+        // Determine if this is a new or existing product by checking if mCurrentProductUri is null
         // or not
         if (mCurrentProductUri == null) {
 
@@ -256,7 +256,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Respond to a click on the "Up" arrow button in the app bar
             case android.R.id.home:
                 /**
-                 * If the pet hasn't changed, continue with navigating up to parent activity
+                 * If the product hasn't changed, continue with navigating up to parent activity
                  * which is the {@link CatalogActivity}
                  */
                 if (!mProductHasChanged) {
@@ -312,7 +312,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
-        // Since the editor shows all pet attributes, define a projection that contains
+        // Since the editor shows all products attributes, define a projection that contains
         // all columns from the inventory table
         String[] projection = {
                 InventoryEntry.COLUMN_INVENTORY_NAME,
@@ -323,7 +323,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(
                 this,                       // Parent activity context
-                mCurrentProductUri,         // Query the content URI for the current pet
+                mCurrentProductUri,         // Query the content URI for the current product
                 projection,                 // Columns to include in the resulting Cursor
                 null,                       // No selection clause
                 null,                       // No selection arguments
@@ -389,7 +389,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.keep_editing, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Keep editing" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the product.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -418,7 +418,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Cancel" button, so dismiss the dialog
-                // and continue editing the pet.
+                // and continue editing the product.
                 if (dialog != null) {
                     dialog.dismiss();
                 }
@@ -431,7 +431,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     }
 
     /**
-     * Perform the deletion of the pet in the database.
+     * Perform the deletion of the product in the database.
      */
     private void deleteProduct() {
         // Only perform the delete if this is an existing product.
@@ -457,3 +457,4 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         finish();
     }
 }
+
