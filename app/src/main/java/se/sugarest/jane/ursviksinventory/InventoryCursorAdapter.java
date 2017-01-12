@@ -73,7 +73,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         int priceColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_PRICE);
         int quantityColumnIndex = cursor.getColumnIndex(InventoryContract.InventoryEntry.COLUMN_INVENTORY_QUANTITY);
 
-        // Read the attributes from the Cursor for the current pet\
+        // Read the attributes from the Cursor for the current product
         byte[] imgByte = cursor.getBlob(pictureColumnIndex);
         Bitmap productPicture = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
         String productName = cursor.getString(nameColumnIndex);
