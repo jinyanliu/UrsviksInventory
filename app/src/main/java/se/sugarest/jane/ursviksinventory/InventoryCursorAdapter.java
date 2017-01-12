@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,8 +30,6 @@ import static se.sugarest.jane.ursviksinventory.data.InventoryContract.PATH_INVE
  * how to create list items for each row of inventory data in the {@Link Cursor}.
  */
 public class InventoryCursorAdapter extends CursorAdapter {
-
-    private int productQuantity;
 
     /**
      * Constructs a new {@link InventoryCursorAdapter}.
@@ -69,7 +66,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
      *                correct row.
      */
     @Override
-    public void bindView(final View view, final Context context, Cursor cursor) {
+    public void bindView(final View view, final Context context, final Cursor cursor) {
         // Find individual views that we want to modify in the list item layout.
         ImageView pictureImageView = (ImageView) view.findViewById(R.id.list_item_picture);
         TextView nameTextView = (TextView) view.findViewById(R.id.list_item_name);
@@ -81,7 +78,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         int pictureColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_PICTURE);
         int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_NAME);
         int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_PRICE);
-        int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_QUANTITY);
+        final int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_QUANTITY);
         int rowIdColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
         int id = cursor.getInt(rowIdColumnIndex);
 
@@ -101,22 +98,22 @@ public class InventoryCursorAdapter extends CursorAdapter {
 
         String productName = cursor.getString(nameColumnIndex);
         int productPrice = cursor.getInt(priceColumnIndex);
-        productQuantity = cursor.getInt(quantityColumnIndex);
+        final int productQuantity = cursor.getInt(quantityColumnIndex);
 
         saleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 if (productQuantity > 0) {
-                    productQuantity = productQuantity - 1;
+                    // update the view
+                    quantityTextView.setText(String.valueOf(productQuantity - 1));
+
+                    // update DB
                     ContentValues values = new ContentValues();
-                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity);
+                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - 1);
                     context.getContentResolver().update(newUri, values, null, null);
                 } else {
                     Toast.makeText(context, R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
                 }
-                Log.v("InventoryCursorAdapter", "productQuantity: " + productQuantity);
-                quantityTextView.setText(String.valueOf(productQuantity));
-                Log.v("button focusable?", "" + saleButton.isFocusable());
-                Log.v("item focusable?", "" + view.isFocusable());
             }
         });
 
