@@ -2,6 +2,7 @@ package se.sugarest.jane.ursviksinventory;
 
 import android.app.LoaderManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -137,6 +140,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mCurrentQuantityEditText.setOnTouchListener(mTouchListener);
         mSaleQuantityEditText.setOnTouchListener(mTouchListener);
         mReceiveQuantityEditText.setOnTouchListener(mTouchListener);
+
+        // Find order Button and sent intent to send email
+        Button orderButton = (Button) findViewById(R.id.edit_product_order_button);
+        orderButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:")); // Only email apps should handle this
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+                View anotherview = getCurrentFocus();
+                if (anotherview != null) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(anotherview.getWindowToken(), 0);
+                }
+            }
+        });
     }
 
     /**
