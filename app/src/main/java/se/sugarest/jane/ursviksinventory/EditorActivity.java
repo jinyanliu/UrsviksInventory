@@ -79,6 +79,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private EditText mReceiveQuantityEditText;
 
     /**
+     * sale Button to minus current quantity
+     */
+    private Button mSaleButton;
+
+    /**
+     * receive Button to plus current quantity
+     */
+    private Button mReceiveButton;
+
+    /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
@@ -100,6 +110,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        // Find all relevant views that we will need to read user input from
+        mPictureImageView = (ImageView) findViewById(R.id.edit_product_image);
+        mNameEditText = (EditText) findViewById(R.id.edit_product_name);
+        mPriceEditText = (EditText) findViewById(R.id.edit_product_price);
+        mCurrentQuantityEditText = (EditText) findViewById(R.id.edit_product_current_quantity);
+        mSaleQuantityEditText = (EditText) findViewById(R.id.edit_product_sale_quantity);
+        mReceiveQuantityEditText = (EditText) findViewById(R.id.edit_product_receive_quantity);
+        mSaleButton = (Button) findViewById(R.id.edit_product_minus_button);
+        mReceiveButton = (Button) findViewById(R.id.edit_product_plus_button);
+
         // Examine the intent that was used to launch this activity,
         // in order to figure out if users are creating a new product or editing an existing one.
         Intent intent = getIntent();
@@ -113,6 +133,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
             // (It doesn't make sense to delete a product that hasn't been created yet.)
             invalidateOptionsMenu();
+            // Invalidate the minus and plus current quantity function.
+            // (It doesn't make sense to plus or minus a product's quantity when is hasn't beem created yet.)
+            mSaleQuantityEditText.setVisibility(View.INVISIBLE);
+            mReceiveQuantityEditText.setVisibility(View.INVISIBLE);
+            mSaleButton.setVisibility(View.INVISIBLE);
+            mReceiveButton.setVisibility(View.INVISIBLE);
         } else {
             // Otherwise this is an existing product, so change the app bar to say "Edit a Product"
             setTitle(getString(R.string.editor_activity_title_edit_product));
@@ -122,14 +148,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
              */
             getLoaderManager().initLoader(EXISTING_INVENTORY_LOADER, null, this);
         }
-
-        // Find all relevant views that we will need to read user input from
-        mPictureImageView = (ImageView) findViewById(R.id.edit_product_image);
-        mNameEditText = (EditText) findViewById(R.id.edit_product_name);
-        mPriceEditText = (EditText) findViewById(R.id.edit_product_price);
-        mCurrentQuantityEditText = (EditText) findViewById(R.id.edit_product_current_quantity);
-        mSaleQuantityEditText = (EditText) findViewById(R.id.edit_product_sale_quantity);
-        mReceiveQuantityEditText = (EditText) findViewById(R.id.edit_product_receive_quantity);
 
         // Setup OnTouchListeners on all the input fields, so we can determine if the user
         // has touched or modified them. This will let us know id there are unsaved changes
