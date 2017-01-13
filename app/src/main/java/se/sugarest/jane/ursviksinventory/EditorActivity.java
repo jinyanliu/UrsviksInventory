@@ -175,6 +175,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 }
             }
         });
+
+        mSaleButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
+                if (productQuantity > 0) {
+
+                    // update current quantity EditText View
+                    mCurrentQuantityEditText.setText(String.valueOf(productQuantity - 1));
+
+                    // update DB
+                    ContentValues values = new ContentValues();
+                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - 1);
+                    getContentResolver().update(mCurrentProductUri, values, null, null);
+                } else {
+                    Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     /**
