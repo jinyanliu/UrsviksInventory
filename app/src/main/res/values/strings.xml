@@ -123,4 +123,10 @@
 
     <!-- Toast message when user try to save a product information without a product current quantity [CHAR LIMIT=NONE] -->
     <string name="current_quantity_cannot_be_empty">Current Quantity cannot be empty!</string>
+
+    <!-- Toast message when user try to minus a product quantity without providing sale quantity [CHAR LIMIT=NONE] -->
+    <string name="sale_quantity_cannot_be_empty">How many did you sale?</string>
+
+    <!-- Toast message when user try to plus a product quantity without providing receive quantity [CHAR LIMIT=NONE] -->
+    <string name="receive_quantity_cannot_be_empty">How many did you receive?</string>
 </resources>

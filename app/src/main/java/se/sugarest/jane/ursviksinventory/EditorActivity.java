@@ -179,16 +179,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSaleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
-                int saleQuantity = Integer.parseInt(mSaleQuantityEditText.getText().toString());
-                if (productQuantity > 0 && productQuantity > saleQuantity) {
-                    // update current quantity EditText View
-                    mCurrentQuantityEditText.setText(String.valueOf(productQuantity - saleQuantity));
-                    // update DB
-                    ContentValues values = new ContentValues();
-                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - saleQuantity);
-                    getContentResolver().update(mCurrentProductUri, values, null, null);
+                if (!mSaleQuantityEditText.getText().toString().isEmpty()) {
+                    int saleQuantity = Integer.parseInt(mSaleQuantityEditText.getText().toString());
+                    if (productQuantity > 0 && productQuantity >= saleQuantity) {
+                        // update current quantity EditText View
+                        mCurrentQuantityEditText.setText(String.valueOf(productQuantity - saleQuantity));
+                        // update DB
+                        ContentValues values = new ContentValues();
+                        values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - saleQuantity);
+                        getContentResolver().update(mCurrentProductUri, values, null, null);
+                    } else {
+                        Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), R.string.sale_quantity_cannot_be_empty, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -196,13 +200,17 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mReceiveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
-                int receiveQuantity = Integer.parseInt(mReceiveQuantityEditText.getText().toString());
-                // update current quantity EditText View
-                mCurrentQuantityEditText.setText(String.valueOf(productQuantity + receiveQuantity));
-                // update DB
-                ContentValues values = new ContentValues();
-                values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity + receiveQuantity);
-                getContentResolver().update(mCurrentProductUri, values, null, null);
+                if (!mReceiveQuantityEditText.getText().toString().isEmpty()) {
+                    int receiveQuantity = Integer.parseInt(mReceiveQuantityEditText.getText().toString());
+                    // update current quantity EditText View
+                    mCurrentQuantityEditText.setText(String.valueOf(productQuantity + receiveQuantity));
+                    // update DB
+                    ContentValues values = new ContentValues();
+                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity + receiveQuantity);
+                    getContentResolver().update(mCurrentProductUri, values, null, null);
+                } else {
+                    Toast.makeText(getBaseContext(), R.string.receive_quantity_cannot_be_empty, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
