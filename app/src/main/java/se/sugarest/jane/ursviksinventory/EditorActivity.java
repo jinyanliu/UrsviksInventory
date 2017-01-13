@@ -179,18 +179,30 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSaleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
-                if (productQuantity > 0) {
-
+                int saleQuantity = Integer.parseInt(mSaleQuantityEditText.getText().toString());
+                if (productQuantity > 0 && productQuantity > saleQuantity) {
                     // update current quantity EditText View
-                    mCurrentQuantityEditText.setText(String.valueOf(productQuantity - 1));
-
+                    mCurrentQuantityEditText.setText(String.valueOf(productQuantity - saleQuantity));
                     // update DB
                     ContentValues values = new ContentValues();
-                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - 1);
+                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - saleQuantity);
                     getContentResolver().update(mCurrentProductUri, values, null, null);
                 } else {
                     Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        mReceiveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
+                int receiveQuantity = Integer.parseInt(mReceiveQuantityEditText.getText().toString());
+                // update current quantity EditText View
+                mCurrentQuantityEditText.setText(String.valueOf(productQuantity + receiveQuantity));
+                // update DB
+                ContentValues values = new ContentValues();
+                values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity + receiveQuantity);
+                getContentResolver().update(mCurrentProductUri, values, null, null);
             }
         });
     }
