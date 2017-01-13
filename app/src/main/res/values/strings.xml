@@ -115,4 +115,12 @@
     <!-- Toast message when user try to click sale Button when item quantity is smaller than 0 [CHAR LIMIT=NONE] -->
     <string name="sale_button_no_item">Sold out!</string>
 
+    <!-- Toast message when user try to save a product information without a product name [CHAR LIMIT=NONE] -->
+    <string name="name_cannot_be_empty">Name cannot be empty!</string>
+
+    <!-- Toast message when user try to save a product information without a product price [CHAR LIMIT=NONE] -->
+    <string name="price_cannot_be_empty">Price cannot be empty!</string>
+
+    <!-- Toast message when user try to save a product information without a product current quantity [CHAR LIMIT=NONE] -->
+    <string name="current_quantity_cannot_be_empty">Current Quantity cannot be empty!</string>
 </resources>

@@ -168,15 +168,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Read from input fields
         // Use trim to eliminate leading or trailing white space
         if (nameString.isEmpty()) {
-            throw new IllegalArgumentException("Name can not be empty!");
+            throw new IllegalArgumentException(getResources().getString(R.string.name_cannot_be_empty));
         }
         String priceString = mPriceEditText.getText().toString().trim();
         if (priceString.isEmpty()) {
-            throw new IllegalArgumentException("Price can not be empty!");
+            throw new IllegalArgumentException(getResources().getString(R.string.price_cannot_be_empty));
         }
         String currentQuantityString = mCurrentQuantityEditText.getText().toString().trim();
         if (currentQuantityString.isEmpty()) {
-            throw new IllegalArgumentException("Current Quantity can not be empty!");
+            throw new IllegalArgumentException(getResources().getString(R.string.current_quantity_cannot_be_empty));
         }
 
         // Check if htis is supposed to be a new product and check if all the fields in the editor
