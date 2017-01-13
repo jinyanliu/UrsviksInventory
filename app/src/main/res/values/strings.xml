@@ -129,4 +129,10 @@
 
     <!-- Toast message when user try to plus a product quantity without providing receive quantity [CHAR LIMIT=NONE] -->
     <string name="receive_quantity_cannot_be_empty">How many did you receive?</string>
+
+    <!-- Toast message when user try to minus a product quantity with a negative number [CHAR LIMIT=NONE] -->
+    <string name="invalid_sale_quantity">Invalid sale quantity!</string>
+
+    <!-- Toast message when user try to plus a product quantity with a negative number [CHAR LIMIT=NONE] -->
+    <string name="invalid_receive_quantity">Invalid receive quantity!</string>
 </resources>

@@ -181,15 +181,22 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
                 if (!mSaleQuantityEditText.getText().toString().isEmpty()) {
                     int saleQuantity = Integer.parseInt(mSaleQuantityEditText.getText().toString());
-                    if (productQuantity > 0 && productQuantity >= saleQuantity) {
-                        // update current quantity EditText View
-                        mCurrentQuantityEditText.setText(String.valueOf(productQuantity - saleQuantity));
-                        // update DB
-                        ContentValues values = new ContentValues();
-                        values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - saleQuantity);
-                        getContentResolver().update(mCurrentProductUri, values, null, null);
+
+                    if (saleQuantity >= 0) {
+
+                        if (productQuantity > 0 && productQuantity >= saleQuantity) {
+                            // update current quantity EditText View
+                            mCurrentQuantityEditText.setText(String.valueOf(productQuantity - saleQuantity));
+                            // update DB
+                            ContentValues values = new ContentValues();
+                            values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - saleQuantity);
+                            getContentResolver().update(mCurrentProductUri, values, null, null);
+                        } else {
+                            Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
+                        }
+
                     } else {
-                        Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getBaseContext(), R.string.invalid_sale_quantity, Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(getBaseContext(), R.string.sale_quantity_cannot_be_empty, Toast.LENGTH_SHORT).show();
@@ -202,12 +209,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
                 if (!mReceiveQuantityEditText.getText().toString().isEmpty()) {
                     int receiveQuantity = Integer.parseInt(mReceiveQuantityEditText.getText().toString());
-                    // update current quantity EditText View
-                    mCurrentQuantityEditText.setText(String.valueOf(productQuantity + receiveQuantity));
-                    // update DB
-                    ContentValues values = new ContentValues();
-                    values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity + receiveQuantity);
-                    getContentResolver().update(mCurrentProductUri, values, null, null);
+
+                    if (receiveQuantity >= 0) {
+
+                        // update current quantity EditText View
+                        mCurrentQuantityEditText.setText(String.valueOf(productQuantity + receiveQuantity));
+                        // update DB
+                        ContentValues values = new ContentValues();
+                        values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity + receiveQuantity);
+                        getContentResolver().update(mCurrentProductUri, values, null, null);
+                    } else {
+                        Toast.makeText(getBaseContext(), R.string.invalid_receive_quantity, Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getBaseContext(), R.string.receive_quantity_cannot_be_empty, Toast.LENGTH_SHORT).show();
                 }
