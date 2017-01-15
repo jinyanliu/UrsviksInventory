@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -38,8 +37,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import javax.microedition.khronos.opengles.GL10;
 
 import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
 
@@ -116,14 +113,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int imageHeight = image.getHeight();
         int imageWidth = image.getWidth();
 
-        int[] maxSize = new int[1];
-        GLES10.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, maxSize, 0);
+        final int MAX_SIZE = 2048;//http://stackoverflow.com/questions/7428996/hw-accelerated-activity-how-to-get-opengl-texture-size-limit
 
-        if (imageHeight > maxSize[0] || imageWidth > maxSize[0]) {
-            return Bitmap.createScaledBitmap(image, imageWidth / 2, imageHeight / 2, true);
+        while (imageHeight > MAX_SIZE || imageWidth > MAX_SIZE) {
+            imageHeight = imageHeight / 2;
+            imageWidth = imageWidth / 2;
         }
 
-        return image;
+        return Bitmap.createScaledBitmap(image, imageWidth, imageHeight, true);
     }
 
     @Override
@@ -645,8 +642,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         bm = scaleImage(bm);
-
-        mPictureImageView.setImageBitmap(bm);
 
         mPictureImageView.setImageBitmap(bm);
     }
