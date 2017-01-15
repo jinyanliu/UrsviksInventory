@@ -12,6 +12,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -93,6 +94,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * receive Button to plus current quantity
      */
     private Button mReceiveButton;
+
     /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
@@ -273,6 +275,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             throw new IllegalArgumentException(getResources().getString(R.string.current_quantity_cannot_be_empty));
         }
 
+        Bitmap pictureBitmap = ((BitmapDrawable)mPictureImageView.getDrawable()).getBitmap();
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
         // Check if htis is supposed to be a new product and check if all the fields in the editor
         // are blank
         if (mCurrentProductUri == null &&
@@ -292,6 +300,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(InventoryEntry.COLUMN_INVENTORY_NAME, nameString);
         values.put(InventoryEntry.COLUMN_INVENTORY_PRICE, priceInt);
         values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, currentQuantityInt);
+        values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
 
         // Determine if this is a new or existing product by checking if mCurrentProductUri is null
         // or not
@@ -631,9 +640,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
-        Intent intent = getIntent();
-        mCurrentProductUri = intent.getData();
-
         Bitmap bm = null;
         if (data != null) {
             try {
@@ -647,21 +653,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         mPictureImageView.setImageBitmap(bm);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        // update DB
-        ContentValues values = new ContentValues();
-        values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
-        getContentResolver().update(mCurrentProductUri, values, null, null);
-
     }
 
     private void onCaptureImageResult(Intent data) {
-
-        Intent intent = getIntent();
-        mCurrentProductUri = intent.getData();
 
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -684,14 +678,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
         mPictureImageView.setImageBitmap(thumbnail);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        // update DB
-        ContentValues values = new ContentValues();
-        values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
-        getContentResolver().update(mCurrentProductUri, values, null, null);
     }
 
 }
