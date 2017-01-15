@@ -217,7 +217,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                             // update DB
                             ContentValues values = new ContentValues();
                             values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity - saleQuantity);
-                            getContentResolver().update(mCurrentProductUri, values, null, null);
                         } else {
                             Toast.makeText(getBaseContext(), R.string.sale_button_no_item, Toast.LENGTH_SHORT).show();
                         }
@@ -244,7 +243,6 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                         // update DB
                         ContentValues values = new ContentValues();
                         values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, productQuantity + receiveQuantity);
-                        getContentResolver().update(mCurrentProductUri, values, null, null);
                     } else {
                         Toast.makeText(getBaseContext(), R.string.invalid_receive_quantity, Toast.LENGTH_SHORT).show();
                     }
@@ -275,7 +273,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             throw new IllegalArgumentException(getResources().getString(R.string.current_quantity_cannot_be_empty));
         }
 
-        Bitmap pictureBitmap = ((BitmapDrawable)mPictureImageView.getDrawable()).getBitmap();
+        Bitmap pictureBitmap = ((BitmapDrawable) mPictureImageView.getDrawable()).getBitmap();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
