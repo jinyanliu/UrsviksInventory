@@ -1,5 +1,6 @@
 package se.sugarest.jane.ursviksinventory;
 
+import android.Manifest;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,8 +13,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -29,6 +32,8 @@ import android.widget.Toast;
 
 import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
 
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 /**
  * Created by jane on 1/10/17.
  */
@@ -38,61 +43,52 @@ import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
  */
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final int REQUEST_CAMERA = 1;
+    public static final int SELECT_FILE = 2;
     /**
      * Identifier for the inventory data loader
      */
     private static final int EXISTING_INVENTORY_LOADER = 0;
-
     /**
      * Current URI for the existing project(null if it's a new product)
      */
     private Uri mCurrentProductUri;
-
     /**
      * ImageView field to add the product's picture
      */
     private ImageView mPictureImageView;
-
     /**
      * EditText field to enter the product's name
      */
     private EditText mNameEditText;
-
     /**
      * EditText field to enter the product's price
      */
     private EditText mPriceEditText;
-
     /**
      * EditText field to enter the product's current quantity
      */
     private EditText mCurrentQuantityEditText;
-
     /**
      * EditText field to enter the product's sale quantity
      */
     private EditText mSaleQuantityEditText;
-
     /**
      * EditText field to enter the product's receive quantity
      */
     private EditText mReceiveQuantityEditText;
-
     /**
      * sale Button to minus current quantity
      */
     private Button mSaleButton;
-
     /**
      * receive Button to plus current quantity
      */
     private Button mReceiveButton;
-
     /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
-
     /**
      * OnTouchListener that listens for any user touched on a View, implying that they are modifying
      * the view, and we change the mProductHasChanged boolean to true.
@@ -158,6 +154,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mCurrentQuantityEditText.setOnTouchListener(mTouchListener);
         mSaleQuantityEditText.setOnTouchListener(mTouchListener);
         mReceiveQuantityEditText.setOnTouchListener(mTouchListener);
+
+        // Find new photo Button and select Image.
+        Button newPhotoButton = (Button)findViewById(R.id.button_new_photo);
+        newPhotoButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                selectImage();
+            }
+        });
 
         // Find order Button and sent intent to send email
         Button orderButton = (Button) findViewById(R.id.edit_product_order_button);
@@ -548,5 +552,50 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // Close the activity
         finish();
     }
+
+    private void selectImage() {
+        final CharSequence[] items = {"Take Photo", "Choose from Library",
+                "Cancel"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+
+                // Assume thisActivity is the current activity
+                int permissionCheck = ContextCompat.checkSelfPermission(EditorActivity.this,
+                        Manifest.permission.CAMERA);
+
+                if (items[item].equals("Take Photo")) {
+                    //userChoosenTask="Take Photo";
+                    if (permissionCheck == PERMISSION_GRANTED)
+                        cameraIntent();
+
+                } else if (items[item].equals("Choose from Library")) {
+                    //userChoosenTask="Choose from Library";
+                    if (permissionCheck == PERMISSION_GRANTED)
+                        galleryIntent();
+
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void cameraIntent() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intent, REQUEST_CAMERA);
+    }
+
+    private void galleryIntent() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);//
+        startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+    }
+
 }
 
