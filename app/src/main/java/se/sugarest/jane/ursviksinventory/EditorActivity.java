@@ -113,13 +113,12 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int imageHeight = image.getHeight();
         int imageWidth = image.getWidth();
 
-        final int MAX_SIZE = 2048;//http://stackoverflow.com/questions/7428996/hw-accelerated-activity-how-to-get-opengl-texture-size-limit
+        final int MAX_SIZE = 2048; //http://stackoverflow.com/questions/7428996/hw-accelerated-activity-how-to-get-opengl-texture-size-limit
 
         while (imageHeight > MAX_SIZE || imageWidth > MAX_SIZE) {
             imageHeight = imageHeight / 2;
             imageWidth = imageWidth / 2;
         }
-
         return Bitmap.createScaledBitmap(image, imageWidth, imageHeight, true);
     }
 
@@ -632,6 +631,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     @SuppressWarnings("deprecation")
     private void onSelectFromGalleryResult(Intent data) {
 
+        Intent intent = getIntent();
+        mCurrentProductUri = intent.getData();
+
         Bitmap bm = null;
         if (data != null) {
             try {
@@ -644,9 +646,23 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         bm = scaleImage(bm);
 
         mPictureImageView.setImageBitmap(bm);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        // update DB
+        ContentValues values = new ContentValues();
+        values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
+        getContentResolver().update(mCurrentProductUri, values, null, null);
+
     }
 
     private void onCaptureImageResult(Intent data) {
+
+        Intent intent = getIntent();
+        mCurrentProductUri = intent.getData();
+
         Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
@@ -667,6 +683,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
 
         mPictureImageView.setImageBitmap(thumbnail);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        // update DB
+        ContentValues values = new ContentValues();
+        values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
+        getContentResolver().update(mCurrentProductUri, values, null, null);
     }
 
 }
