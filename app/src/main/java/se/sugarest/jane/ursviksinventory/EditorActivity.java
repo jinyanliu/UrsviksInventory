@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -156,9 +157,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mReceiveQuantityEditText.setOnTouchListener(mTouchListener);
 
         // Find new photo Button and select Image.
-        Button newPhotoButton = (Button)findViewById(R.id.button_new_photo);
-        newPhotoButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
+        Button newPhotoButton = (Button) findViewById(R.id.button_new_photo);
+        newPhotoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 selectImage();
             }
         });
@@ -563,14 +564,25 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
-                // Assume thisActivity is the current activity
                 int permissionCheck = ContextCompat.checkSelfPermission(EditorActivity.this,
                         Manifest.permission.CAMERA);
 
                 if (items[item].equals("Take Photo")) {
                     //userChoosenTask="Take Photo";
-                    if (permissionCheck == PERMISSION_GRANTED)
+                    if (permissionCheck == PERMISSION_GRANTED) {
                         cameraIntent();
+                    } else {
+
+                        // No explanation needed, we can request the permission.
+
+                        ActivityCompat.requestPermissions(EditorActivity.this,
+                                new String[]{Manifest.permission.CAMERA},
+                                REQUEST_CAMERA);
+
+                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                        // app-defined int constant. The callback method gets the
+                        // result of the request.
+                    }
 
                 } else if (items[item].equals("Choose from Library")) {
                     //userChoosenTask="Choose from Library";
