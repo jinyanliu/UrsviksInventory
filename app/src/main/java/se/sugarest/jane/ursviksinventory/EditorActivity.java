@@ -1,6 +1,7 @@
 package se.sugarest.jane.ursviksinventory;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,10 +13,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.opengl.GLES10;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +32,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.microedition.khronos.opengles.GL10;
 
 import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
 
@@ -101,6 +111,20 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             return false;
         }
     };
+
+    private static Bitmap scaleImage(Bitmap image) {
+        int imageHeight = image.getHeight();
+        int imageWidth = image.getWidth();
+
+        int[] maxSize = new int[1];
+        GLES10.glGetIntegerv(GL10.GL_MAX_TEXTURE_SIZE, maxSize, 0);
+
+        if (imageHeight > maxSize[0] || imageWidth > maxSize[0]) {
+            return Bitmap.createScaledBitmap(image, imageWidth / 2, imageHeight / 2, true);
+        }
+
+        return image;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -571,24 +595,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                     //userChoosenTask="Take Photo";
                     if (permissionCheck == PERMISSION_GRANTED) {
                         cameraIntent();
-                    } else {
-
-                        // No explanation needed, we can request the permission.
-
-                        ActivityCompat.requestPermissions(EditorActivity.this,
-                                new String[]{Manifest.permission.CAMERA},
-                                REQUEST_CAMERA);
-
-                        // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                        // app-defined int constant. The callback method gets the
-                        // result of the request.
                     }
-
                 } else if (items[item].equals("Choose from Library")) {
                     //userChoosenTask="Choose from Library";
                     if (permissionCheck == PERMISSION_GRANTED)
                         galleryIntent();
-
                 } else if (items[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -607,6 +618,60 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == SELECT_FILE)
+                onSelectFromGalleryResult(data);
+            else if (requestCode == REQUEST_CAMERA)
+                onCaptureImageResult(data);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    private void onSelectFromGalleryResult(Intent data) {
+
+        Bitmap bm = null;
+        if (data != null) {
+            try {
+                bm = MediaStore.Images.Media.getBitmap(getApplicationContext().getContentResolver(), data.getData());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        bm = scaleImage(bm);
+
+        mPictureImageView.setImageBitmap(bm);
+
+        mPictureImageView.setImageBitmap(bm);
+    }
+
+    private void onCaptureImageResult(Intent data) {
+        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+
+        File destination = new File(Environment.getExternalStorageDirectory(),
+                System.currentTimeMillis() + ".jpg");
+
+        FileOutputStream fo;
+        try {
+            destination.createNewFile();
+            fo = new FileOutputStream(destination);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        mPictureImageView.setImageBitmap(thumbnail);
     }
 
 }
