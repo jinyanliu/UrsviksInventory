@@ -42,6 +42,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
 
@@ -289,6 +291,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         });
     }
 
+
+    public boolean equals(Bitmap bitmap1, Bitmap bitmap2) {
+        ByteBuffer buffer1 = ByteBuffer.allocate(bitmap1.getHeight() * bitmap1.getRowBytes());
+        bitmap1.copyPixelsToBuffer(buffer1);
+
+        ByteBuffer buffer2 = ByteBuffer.allocate(bitmap2.getHeight() * bitmap2.getRowBytes());
+        bitmap2.copyPixelsToBuffer(buffer2);
+
+        return Arrays.equals(buffer1.array(), buffer2.array());
+    }
+
+
     /**
      * Get user input editor and save new product into database.
      */
@@ -309,11 +323,21 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             throw new IllegalArgumentException(getResources().getString(R.string.current_quantity_cannot_be_empty));
         }
 
+        Bitmap defaultPicture = BitmapFactory.decodeResource(getResources(), R.drawable.ic_photo);
+
         Bitmap pictureBitmap = ((BitmapDrawable) mPictureImageView.getDrawable()).getBitmap();
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        byte[] byteArray = stream.toByteArray();
+        boolean checkBitmapEqual = equals(defaultPicture,pictureBitmap);
+
+        byte[] byteArray;
+
+        if (checkBitmapEqual){
+            byteArray = null;
+        } else{
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+        }
 
         String supplierEmailString = mSupplierEmailEditText.getText().toString().trim();
 
