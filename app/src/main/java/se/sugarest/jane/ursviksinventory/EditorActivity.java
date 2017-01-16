@@ -723,16 +723,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent();
                 } else {
-                    break;
+                    Toast.makeText(EditorActivity.this, "Request Camera Denied.", Toast.LENGTH_SHORT).show();
                 }
-                return;
+                break;
             case SELECT_FILE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleryIntent();
                 } else {
-                    break;
+                    Toast.makeText(EditorActivity.this, "Select Photo from library Denied.", Toast.LENGTH_SHORT).show();
                 }
-                return;
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         }
     }
 
