@@ -7,6 +7,7 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
 import se.sugarest.jane.ursviksinventory.data.InventoryContract.InventoryEntry;
@@ -70,6 +71,14 @@ public class InventoryProvider extends ContentProvider {
      * Database helper that will provide us access to the database.
      */
     private InventoryDbHelper mDbHelper;
+
+    public final static boolean isValidEmail(CharSequence target) {
+        if (TextUtils.isEmpty(target)) {
+            return false;
+        } else {
+            return android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
+        }
+    }
 
     /**
      * Initialize the provider and the database helper object.
@@ -180,7 +189,15 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a valid quantity");
         }
 
-        // No need to check picture and supplier email, any value is valid(including null).
+        // Check that the email is valid if the email is provided.
+        String email = values.getAsString(InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
+        if (email != null && !email.isEmpty()) {
+            if (isValidEmail(email) == false) {
+                throw new IllegalArgumentException("Product requires a valid supplier email");
+            }
+        }
+
+        // No need to check picture, any value is valid(including null).
 
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -270,7 +287,20 @@ public class InventoryProvider extends ContentProvider {
             }
         }
 
-        // No need to check the picture and supplier email, any value is valid (including null).
+        /**
+         * If the {@link InventoryEntry#COLUMN_INVENTORY_SUPPLIER_EMAIL} key is present,
+         * check that the email is valid
+         */
+        if (values.containsKey(InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL)) {
+            String email = values.getAsString(InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
+            if (email != null && !email.isEmpty()) {
+                if (isValidEmail(email) == false) {
+                    throw new IllegalArgumentException("Product requires a valid supplier email");
+                }
+            }
+        }
+
+        // No need to check the picture, any value is valid (including null).
 
         // Otherwise, get writable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
