@@ -88,6 +88,7 @@ public class InventoryCursorAdapter extends CursorAdapter {
         byte[] imgByte = cursor.getBlob(pictureColumnIndex);
 
         if (imgByte != null) {
+            pictureImageView.setVisibility(View.VISIBLE);
             Bitmap productPicture = BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
             // Update the ImageView with the attributes for the current product
             pictureImageView.setImageBitmap(productPicture);
