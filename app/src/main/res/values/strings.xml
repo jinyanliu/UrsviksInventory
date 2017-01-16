@@ -148,4 +148,6 @@
     <!-- Dialog option three "Cancel" when asking user to choose new picture from gallery or camera or cancel [CHAR LIMIT=20] -->
     <string name="dialog_add_photo_cancel">Cancel</string>
 
+    <!-- email subject when clicking order more button to send an email to supplier [CHAR LIMIT=20] -->
+    <string name="email_subject">Order for</string>
 </resources>

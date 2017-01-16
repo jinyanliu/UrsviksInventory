@@ -207,6 +207,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SENDTO);
                 intent.setData(Uri.parse("mailto:")); // Only email apps should handle this
+
+                String productName = mNameEditText.getText().toString();
+                String emailSubject = getString(R.string.email_subject) + " " + productName;
+                intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
                 }
