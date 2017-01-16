@@ -156,4 +156,20 @@
 
     <!-- email subject when clicking order more button to send an email to supplier [CHAR LIMIT=20] -->
     <string name="email_subject">Order for</string>
+
+    <!-- Dialog Title when checking found there is no permission to access camera or gallery [CHAR LIMIT=20] -->
+    <string name="permission_necessary">Permission Necessary!</string>
+
+    <!-- Dialog Message when checking found there is no permission to access camera [CHAR LIMIT=20] -->
+    <string name="camera_permission_necessary">Camera permission is necessary</string>
+
+    <!-- Dialog Message when checking found there is no permission to access gallery [CHAR LIMIT=20] -->
+    <string name="library_permission_necessary">External storage permission is necessary</string>
+
+    <!-- Toast message when user denied camera access. [CHAR LIMIT=20] -->
+    <string name="request_camera_denied">Request Camera Denied.</string>
+
+    <!-- Toast message when user denied library access. [CHAR LIMIT=20] -->
+    <string name="select_photo_from_library_denied">Select Photo from library Denied.</string>
+
 </resources>

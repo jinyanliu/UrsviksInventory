@@ -654,8 +654,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
 
                             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EditorActivity.this);
                             alertBuilder.setCancelable(true);
-                            alertBuilder.setTitle("Permission necessary");
-                            alertBuilder.setMessage("External storage permission is necessary");
+                            alertBuilder.setTitle(R.string.permission_necessary);
+                            alertBuilder.setMessage(R.string.camera_permission_necessary);
                             alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                                 public void onClick(DialogInterface dialog, int which) {
@@ -665,22 +665,24 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                             AlertDialog alert = alertBuilder.create();
                             alert.show();
 
-                        }else{
+                        } else {
                             ActivityCompat.requestPermissions(EditorActivity.this,
                                     new String[]{Manifest.permission.CAMERA},
                                     REQUEST_CAMERA);
                         }
+                    } else {
+                        cameraIntent();
                     }
                 } else if (items[item].equals(getResources().getString(R.string.dialog_add_photo_choose_from_library))) {
                     //userChoosenTask="Choose from Library";
-                    if (permissionCheckGallery != PERMISSION_GRANTED){
+                    if (permissionCheckGallery != PERMISSION_GRANTED) {
                         if (ActivityCompat.shouldShowRequestPermissionRationale(EditorActivity.this,
                                 Manifest.permission.READ_EXTERNAL_STORAGE)) {
 
                             AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EditorActivity.this);
                             alertBuilder.setCancelable(true);
-                            alertBuilder.setTitle("Permission necessary");
-                            alertBuilder.setMessage("External storage permission is necessary");
+                            alertBuilder.setTitle(R.string.permission_necessary);
+                            alertBuilder.setMessage(R.string.library_permission_necessary);
                             alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
                                 public void onClick(DialogInterface dialog, int which) {
@@ -690,12 +692,14 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                             AlertDialog alert = alertBuilder.create();
                             alert.show();
 
-                        }else{
+                        } else {
                             ActivityCompat.requestPermissions(EditorActivity.this,
                                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                                     SELECT_FILE);
                         }
-                }
+                    } else {
+                        galleryIntent();
+                    }
                 } else if (items[item].equals(getResources().getString(R.string.dialog_add_photo_cancel))) {
                     dialog.dismiss();
                 }
@@ -723,18 +727,18 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     cameraIntent();
                 } else {
-                    Toast.makeText(EditorActivity.this, "Request Camera Denied.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, R.string.request_camera_denied, Toast.LENGTH_SHORT).show();
                 }
                 break;
             case SELECT_FILE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     galleryIntent();
                 } else {
-                    Toast.makeText(EditorActivity.this, "Select Photo from library Denied.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(EditorActivity.this, R.string.select_photo_from_library_denied, Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
-                super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
