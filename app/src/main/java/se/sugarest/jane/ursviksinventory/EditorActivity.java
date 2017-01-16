@@ -220,7 +220,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
 
                 String productSupplierEmail = mSupplierEmailEditText.getText().toString();
-                intent.putExtra(Intent.EXTRA_EMAIL, productSupplierEmail);
+                intent.putExtra(Intent.EXTRA_EMAIL, new String[]{productSupplierEmail});
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
