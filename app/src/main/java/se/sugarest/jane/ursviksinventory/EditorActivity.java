@@ -115,7 +115,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         int imageHeight = image.getHeight();
         int imageWidth = image.getWidth();
 
-        final int MAX_SIZE = 2048; //http://stackoverflow.com/questions/7428996/hw-accelerated-activity-how-to-get-opengl-texture-size-limit
+        final int MAX_SIZE = 2048;
 
         while (imageHeight > MAX_SIZE || imageWidth > MAX_SIZE) {
             imageHeight = imageHeight / 2;
@@ -495,6 +495,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mSaleQuantityEditText.setText("");
         mReceiveQuantityEditText.setText("");
         mPictureImageView.setImageBitmap(null);
+        mPictureImageView.destroyDrawingCache();
     }
 
     /**
