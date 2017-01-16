@@ -122,5 +122,4 @@ public class InventoryCursorAdapter extends CursorAdapter {
         priceTextView.setText(String.valueOf(productPrice) + " kr");
         quantityTextView.setText(String.valueOf(productQuantity));
     }
-
 }

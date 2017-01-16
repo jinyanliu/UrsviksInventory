@@ -53,43 +53,54 @@ import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     public static final int REQUEST_CAMERA = 1;
+
     public static final int SELECT_FILE = 2;
+
     /**
      * Identifier for the inventory data loader
      */
     private static final int EXISTING_INVENTORY_LOADER = 0;
+
     /**
      * Current URI for the existing project(null if it's a new product)
      */
     private Uri mCurrentProductUri;
+
     /**
      * ImageView field to add the product's picture
      */
     private ImageView mPictureImageView;
+
     /**
      * EditText field to enter the product's name
      */
     private EditText mNameEditText;
+
     /**
      * EditText field to enter the product's price
      */
     private EditText mPriceEditText;
+
     /**
      * EditText field to enter the product's current quantity
      */
     private EditText mCurrentQuantityEditText;
+
     /**
      * EditText field to enter the product's sale quantity
      */
     private EditText mSaleQuantityEditText;
+
     /**
      * EditText field to enter the product's receive quantity
      */
     private EditText mReceiveQuantityEditText;
+
     /**
      * sale Button to minus current quantity
      */
     private Button mSaleButton;
+
     /**
      * receive Button to plus current quantity
      */
@@ -99,6 +110,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
+
     /**
      * OnTouchListener that listens for any user touched on a View, implying that they are modifying
      * the view, and we change the mProductHasChanged boolean to true.
@@ -111,6 +123,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         }
     };
 
+    /**
+     * Helper method to scale the large images
+     */
     private static Bitmap scaleImage(Bitmap image) {
         int imageHeight = image.getHeight();
         int imageWidth = image.getWidth();
@@ -203,6 +218,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
+        // Find sale Button and minus the quantity with the number from saleQuantityEditText
         mSaleButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
@@ -230,6 +246,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             }
         });
 
+        // Find receive Button and plus the quantity with the number from receiveQuantityEditText
         mReceiveButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 int productQuantity = Integer.parseInt(mCurrentQuantityEditText.getText().toString());
@@ -279,7 +296,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
-        // Check if htis is supposed to be a new product and check if all the fields in the editor
+        // Check if this is supposed to be a new product and check if all the fields in the editor
         // are blank
         if (mCurrentProductUri == null &&
                 TextUtils.isEmpty(nameString) && TextUtils.isEmpty(priceString) &&
@@ -582,12 +599,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         finish();
     }
 
+    /**
+     * Helper method to open selectImage() Dialog and choose image from camera or gallery or cancel.
+     */
     private void selectImage() {
-        final CharSequence[] items = {"Take Photo", "Choose from Library",
-                "Cancel"};
+        final CharSequence[] items = {getResources().getString(R.string.dialog_add_photo_take_photo),
+                getResources().getString(R.string.dialog_add_photo_choose_from_library),
+                getResources().getString(R.string.dialog_add_photo_cancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(getResources().getString(R.string.dialog_add_photo_title));
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
@@ -595,16 +616,16 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 int permissionCheck = ContextCompat.checkSelfPermission(EditorActivity.this,
                         Manifest.permission.CAMERA);
 
-                if (items[item].equals("Take Photo")) {
+                if (items[item].equals(getResources().getString(R.string.dialog_add_photo_take_photo))) {
                     //userChoosenTask="Take Photo";
                     if (permissionCheck == PERMISSION_GRANTED) {
                         cameraIntent();
                     }
-                } else if (items[item].equals("Choose from Library")) {
+                } else if (items[item].equals(getResources().getString(R.string.dialog_add_photo_choose_from_library))) {
                     //userChoosenTask="Choose from Library";
                     if (permissionCheck == PERMISSION_GRANTED)
                         galleryIntent();
-                } else if (items[item].equals("Cancel")) {
+                } else if (items[item].equals(getResources().getString(R.string.dialog_add_photo_cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -678,6 +699,5 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mPictureImageView.setImageBitmap(thumbnail);
 
     }
-
 }
 

@@ -135,4 +135,17 @@
 
     <!-- Toast message when user try to plus a product quantity with a negative number [CHAR LIMIT=NONE] -->
     <string name="invalid_receive_quantity">Invalid receive quantity!</string>
+
+    <!-- Dialog title when asking user to choose new picture from gallery or camera or cancel [CHAR LIMIT=20] -->
+    <string name="dialog_add_photo_title">Add Photo!</string>
+
+    <!-- Dialog option one "Take Photo" when asking user to choose new picture from gallery or camera or cancel [CHAR LIMIT=20] -->
+    <string name="dialog_add_photo_take_photo">Take Photo</string>
+
+    <!-- Dialog option two "Choose from Library" when asking user to choose new picture from gallery or camera or cancel [CHAR LIMIT=20] -->
+    <string name="dialog_add_photo_choose_from_library">Choose from Library</string>
+
+    <!-- Dialog option three "Cancel" when asking user to choose new picture from gallery or camera or cancel [CHAR LIMIT=20] -->
+    <string name="dialog_add_photo_cancel">Cancel</string>
+
 </resources>

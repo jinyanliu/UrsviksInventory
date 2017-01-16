@@ -34,7 +34,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     // Identifies a particular Loader being used in this component
     private static final int INVENTORY_LOADER = 0;
 
-    InventoryCursorAdapter mCursorAdapter;
+    private InventoryCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
