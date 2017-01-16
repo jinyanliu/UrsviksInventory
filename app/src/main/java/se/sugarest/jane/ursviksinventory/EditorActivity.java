@@ -1,6 +1,7 @@
 package se.sugarest.jane.ursviksinventory;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -9,15 +10,18 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -636,18 +640,62 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             @Override
             public void onClick(DialogInterface dialog, int item) {
 
-                int permissionCheck = ContextCompat.checkSelfPermission(EditorActivity.this,
+                int permissionCheckCamera = ContextCompat.checkSelfPermission(EditorActivity.this,
                         Manifest.permission.CAMERA);
+
+                int permissionCheckGallery = ContextCompat.checkSelfPermission(EditorActivity.this,
+                        Manifest.permission.READ_EXTERNAL_STORAGE);
 
                 if (items[item].equals(getResources().getString(R.string.dialog_add_photo_take_photo))) {
                     //userChoosenTask="Take Photo";
-                    if (permissionCheck == PERMISSION_GRANTED) {
-                        cameraIntent();
+                    if (permissionCheckCamera != PERMISSION_GRANTED) {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(EditorActivity.this,
+                                Manifest.permission.CAMERA)) {
+
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EditorActivity.this);
+                            alertBuilder.setCancelable(true);
+                            alertBuilder.setTitle("Permission necessary");
+                            alertBuilder.setMessage("External storage permission is necessary");
+                            alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(EditorActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                                }
+                            });
+                            AlertDialog alert = alertBuilder.create();
+                            alert.show();
+
+                        }else{
+                            ActivityCompat.requestPermissions(EditorActivity.this,
+                                    new String[]{Manifest.permission.CAMERA},
+                                    REQUEST_CAMERA);
+                        }
                     }
                 } else if (items[item].equals(getResources().getString(R.string.dialog_add_photo_choose_from_library))) {
                     //userChoosenTask="Choose from Library";
-                    if (permissionCheck == PERMISSION_GRANTED)
-                        galleryIntent();
+                    if (permissionCheckGallery != PERMISSION_GRANTED){
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(EditorActivity.this,
+                                Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+                            AlertDialog.Builder alertBuilder = new AlertDialog.Builder(EditorActivity.this);
+                            alertBuilder.setCancelable(true);
+                            alertBuilder.setTitle("Permission necessary");
+                            alertBuilder.setMessage("External storage permission is necessary");
+                            alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(EditorActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, SELECT_FILE);
+                                }
+                            });
+                            AlertDialog alert = alertBuilder.create();
+                            alert.show();
+
+                        }else{
+                            ActivityCompat.requestPermissions(EditorActivity.this,
+                                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                                    SELECT_FILE);
+                        }
+                }
                 } else if (items[item].equals(getResources().getString(R.string.dialog_add_photo_cancel))) {
                     dialog.dismiss();
                 }
@@ -666,6 +714,26 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);//
         startActivityForResult(Intent.createChooser(intent, "Select File"), SELECT_FILE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CAMERA:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    cameraIntent();
+                } else {
+                    break;
+                }
+                return;
+            case SELECT_FILE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    galleryIntent();
+                } else {
+                    break;
+                }
+                return;
+        }
     }
 
     @Override
