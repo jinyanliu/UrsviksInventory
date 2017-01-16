@@ -104,5 +104,12 @@ public class InventoryContract {
          * Type: INTEGER
          */
         public final static String COLUMN_INVENTORY_QUANTITY = "quantity";
+
+        /**
+         * Quantity of the inventory
+         * <p>
+         * Type: INTEGER
+         */
+        public final static String COLUMN_INVENTORY_SUPPLIER_EMAIL = "supplier";
     }
 }

@@ -119,6 +119,7 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         values.put(InventoryEntry.COLUMN_INVENTORY_PRICE, "20");
         values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, "50");
+        values.put(InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL, "janejanegulu@gmail.com");
 
         /**
          * Insert a new row for peanuts into the provider using the ContentResolver.
@@ -177,7 +178,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
                 InventoryEntry.COLUMN_INVENTORY_NAME,
                 InventoryEntry.COLUMN_INVENTORY_PICTURE,
                 InventoryEntry.COLUMN_INVENTORY_PRICE,
-                InventoryEntry.COLUMN_INVENTORY_QUANTITY};
+                InventoryEntry.COLUMN_INVENTORY_QUANTITY,
+                InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(

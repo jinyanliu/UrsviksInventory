@@ -105,6 +105,30 @@
         </RelativeLayout>
     </LinearLayout>
 
+    <!-- Supplier Email category -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Label -->
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:text="@string/category_supplier_email"/>
+
+        <!-- Input fields -->
+        <EditText
+            android:id="@+id/edit_product_supplier_email"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_product_supplier_email"
+            android:inputType="text"/>
+    </LinearLayout>
+
     <!-- Quantity category -->
     <LinearLayout
         android:layout_width="wrap_content"

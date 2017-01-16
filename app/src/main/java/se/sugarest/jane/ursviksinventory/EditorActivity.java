@@ -107,6 +107,11 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     private Button mReceiveButton;
 
     /**
+     * EditText field to enter the product's supplier email
+     */
+    private EditText mSupplierEmailEditText;
+
+    /**
      * Boolean flag that keeps track of whether the product has been edited (true) or not (false)
      */
     private boolean mProductHasChanged = false;
@@ -153,6 +158,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mReceiveQuantityEditText = (EditText) findViewById(R.id.edit_product_receive_quantity);
         mSaleButton = (Button) findViewById(R.id.edit_product_minus_button);
         mReceiveButton = (Button) findViewById(R.id.edit_product_plus_button);
+        mSupplierEmailEditText = (EditText) findViewById(R.id.edit_product_supplier_email);
 
         // Examine the intent that was used to launch this activity,
         // in order to figure out if users are creating a new product or editing an existing one.
@@ -192,6 +198,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mCurrentQuantityEditText.setOnTouchListener(mTouchListener);
         mSaleQuantityEditText.setOnTouchListener(mTouchListener);
         mReceiveQuantityEditText.setOnTouchListener(mTouchListener);
+        mSupplierEmailEditText.setOnTouchListener(mTouchListener);
 
         // Find new photo Button and select Image.
         Button newPhotoButton = (Button) findViewById(R.id.button_new_photo);
@@ -211,6 +218,9 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 String productName = mNameEditText.getText().toString();
                 String emailSubject = getString(R.string.email_subject) + " " + productName;
                 intent.putExtra(Intent.EXTRA_SUBJECT, emailSubject);
+
+                String productSupplierEmail = mSupplierEmailEditText.getText().toString();
+                intent.putExtra(Intent.EXTRA_EMAIL, productSupplierEmail);
 
                 if (intent.resolveActivity(getPackageManager()) != null) {
                     startActivity(intent);
@@ -301,6 +311,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         pictureBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
+        String supplierEmailString = mSupplierEmailEditText.getText().toString().trim();
+
         // Check if this is supposed to be a new product and check if all the fields in the editor
         // are blank
         if (mCurrentProductUri == null &&
@@ -321,6 +333,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         values.put(InventoryEntry.COLUMN_INVENTORY_PRICE, priceInt);
         values.put(InventoryEntry.COLUMN_INVENTORY_QUANTITY, currentQuantityInt);
         values.put(InventoryEntry.COLUMN_INVENTORY_PICTURE, byteArray);
+        values.put(InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL, supplierEmailString);
 
         // Determine if this is a new or existing product by checking if mCurrentProductUri is null
         // or not
@@ -461,7 +474,8 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
                 InventoryEntry.COLUMN_INVENTORY_NAME,
                 InventoryEntry.COLUMN_INVENTORY_PICTURE,
                 InventoryEntry.COLUMN_INVENTORY_PRICE,
-                InventoryEntry.COLUMN_INVENTORY_QUANTITY};
+                InventoryEntry.COLUMN_INVENTORY_QUANTITY,
+                InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL};
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(
@@ -489,6 +503,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_NAME);
             int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_PRICE);
             int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_QUANTITY);
+            int supplierEmailColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_INVENTORY_SUPPLIER_EMAIL);
 
             // Extract out the value from the Cursor for the given column index
             byte[] imgByte = cursor.getBlob(pictureColumnIndex);
@@ -500,11 +515,13 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             String productName = cursor.getString(nameColumnIndex);
             int productPrice = cursor.getInt(priceColumnIndex);
             int productQuantity = cursor.getInt(quantityColumnIndex);
+            String productSupplierEmail = cursor.getString(supplierEmailColumnIndex);
 
             // Update the views on the screen with the values from the database
             mNameEditText.setText(productName);
             mPriceEditText.setText(String.valueOf(productPrice));
             mCurrentQuantityEditText.setText(String.valueOf(productQuantity));
+            mSupplierEmailEditText.setText(productSupplierEmail);
         }
     }
 
@@ -518,6 +535,7 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         mReceiveQuantityEditText.setText("");
         mPictureImageView.setImageBitmap(null);
         mPictureImageView.destroyDrawingCache();
+        mSupplierEmailEditText.setText("");
     }
 
     /**

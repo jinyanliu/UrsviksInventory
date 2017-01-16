@@ -16,6 +16,9 @@
     <!-- Label for price information in the editor [CHAR LIMIT=20] -->
     <string name="category_price">Price</string>
 
+    <!-- Label for supplier email information in the editor [CHAR LIMIT=20] -->
+    <string name="category_supplier_email">Supplier Email</string>
+
     <!-- Label for quantity information in the editor [CHAR LIMIT=20] -->
     <string name="category_quantity">Current Quantity</string>
 
@@ -24,6 +27,9 @@
 
     <!-- Text hint for price field in the editor [CHAR LIMIT=20] -->
     <string name="hint_product_price">Price</string>
+
+    <!-- Text hint for supplier email field in the editor [CHAR LIMIT=20] -->
+    <string name="hint_product_supplier_email">Email Address</string>
 
     <!-- Units for price of the product (kr) [CHAR LIMIT=5] -->
     <string name="unit_price">kr</string>

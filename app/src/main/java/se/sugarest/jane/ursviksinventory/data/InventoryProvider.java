@@ -180,7 +180,7 @@ public class InventoryProvider extends ContentProvider {
             throw new IllegalArgumentException("Product requires a valid quantity");
         }
 
-        // No need to check picture, any value is valid(including null).
+        // No need to check picture and supplier email, any value is valid(including null).
 
         // Get writable database
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
@@ -270,7 +270,7 @@ public class InventoryProvider extends ContentProvider {
             }
         }
 
-        // No need to check the picture, any value is valid (including null).
+        // No need to check the picture and supplier email, any value is valid (including null).
 
         // Otherwise, get writable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
